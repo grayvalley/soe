@@ -28,7 +28,7 @@ namespace QVT::SOE {
         void from(char* buffer, size_t len);
         MESSAGE_TYPE messageType();
         template<typename T>
-        T get(std::string key);
+        T get(const std::string& key);
         void print();
     };
 }
@@ -101,10 +101,7 @@ namespace QVT::SOE {
 namespace QVT::SOE {
     class OrderRejected: public InboundMessage {
         int OrderId;
-        int Price;
-        int Quantity;
-        ORDER_TYPE OrderType;
-        SIDE Side;
+        std::string Reason;
     public:
         OrderRejected() = default;
         PREVENT_COPY(OrderRejected);
