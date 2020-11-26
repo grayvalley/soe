@@ -1,8 +1,9 @@
 #ifndef _SOELISTENER_HH
 #define _SOELISTENER_HH
 #include <list>
-#include <laniakea/eridanus/SOE.hh>
-#include <laniakea/virgo/macros.hh>
+#include <grayvalley/core/macros.hh>
+#include <grayvalley/soe/SOE.hh>
+
 namespace SOE {
     class SOEListener {
     public:

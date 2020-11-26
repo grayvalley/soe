@@ -1,12 +1,12 @@
-#ifndef SOECLIENT_HH
-#define SOECLIENT_HH
+#ifndef _SOECLIENT_HH
+#define _SOECLIENT_HH
 #include <string>
 #include <functional>
-#include <laniakea/virgo/epolling.hh>
-#include <laniakea/virgo/fragment.hh>
-#include <laniakea/eridanus/SOE.hh>
-#include <laniakea/eridanus/SOEParser.hh>
-#include <laniakea/eridanus/RFC6455.hh>
+#include <grayvalley/core/epolling.hh>
+#include <grayvalley/core/fragment.hh>
+#include <grayvalley/soe/SOE.hh>
+#include <grayvalley/soe/SOEParser.hh>
+#include <grayvalley/soe/RFC6455.hh>
 namespace SOE {
     class SOEClient : public Epollable {
     private:
@@ -29,4 +29,4 @@ namespace SOE {
         void send(const FragmentView& fragment);
     };
 }
-#endif //SOECLIENT_HH
+#endif //_SOECLIENT_HH

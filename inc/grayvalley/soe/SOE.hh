@@ -1,9 +1,9 @@
-#ifndef SOE_HH
-#define SOE_HH
+#ifndef _SOE_HH
+#define _SOE_HH
 #include <nlohmann/json.hpp>
-#include <laniakea/virgo/fragment.hh>
-#include <laniakea/virgo/macros.hh>
-#include <laniakea/virgo/enums.hh>
+#include <grayvalley/core/fragment.hh>
+#include <grayvalley/core/macros.hh>
+#include <grayvalley/core/enums.hh>
 
 namespace SOE {
     enum MESSAGE_TYPE: int {
