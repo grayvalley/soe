@@ -10,6 +10,7 @@ namespace QVT::SOE {
         OrderAccepted* m_p_orderAccepted = nullptr;
         OrderRejected* m_p_orderRejected = nullptr;
         OrderExecuted* m_p_orderExecuted = nullptr;
+        OrderCanceled* m_p_orderCanceled = nullptr;
         SOEListener*   m_p_listener      = nullptr;
     public:
         SOEParser() = delete;

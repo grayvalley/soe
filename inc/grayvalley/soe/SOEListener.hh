@@ -14,6 +14,7 @@ namespace QVT::SOE {
         virtual void onOrderAccepted(OrderAccepted* p_message) = 0;
         virtual void onOrderRejected(OrderRejected* p_message) = 0;
         virtual void onOrderExecuted(OrderExecuted* p_message) = 0;
+        virtual void onOrderCanceled(OrderCanceled* p_message) = 0;
     };
 }
 #endif //_SOELISTENER_HH
