@@ -69,6 +69,9 @@ An Order Accepted message is sent as a response to an New Order request to ackno
 |  `side`         | `string`     | `B`  or `S`    |
 |  `timestamp`    | `int`        |                |
 
+If limit order results in an immediate execution, the accepted message will contain the original quantity of the order, i.e. not the quantity that is left in the book
+after the immediate execution of the new order.
+
 #### Order Rejected
 
 | Name            | Type         | Value          |
