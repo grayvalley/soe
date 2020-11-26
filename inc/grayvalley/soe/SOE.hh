@@ -5,7 +5,7 @@
 #include <grayvalley/core/macros.hh>
 #include <grayvalley/core/enums.hh>
 
-namespace SOE {
+namespace QVT::SOE {
     enum MESSAGE_TYPE: int {
         MESSAGE_TYPE_EMPTY,
         MESSAGE_TYPE_INVALID,
@@ -17,8 +17,7 @@ namespace SOE {
     };
 }
 
-
-namespace SOE {
+namespace QVT::SOE {
     class Message {
     protected:
         nlohmann::json m_body;
@@ -34,7 +33,7 @@ namespace SOE {
     };
 }
 
-namespace SOE {
+namespace QVT::SOE {
     class InboundMessage {
     public:
         InboundMessage() = default;
@@ -44,7 +43,7 @@ namespace SOE {
     };
 }
 
-namespace SOE {
+namespace QVT::SOE {
     class OutboundMessage {
     public:
         OutboundMessage() = default;
@@ -52,7 +51,7 @@ namespace SOE {
     };
 }
 
-namespace SOE {
+namespace QVT::SOE {
     class OrderAdd: public InboundMessage, OutboundMessage {
     public:
         int OrderId;
@@ -70,7 +69,7 @@ namespace SOE {
     };
 }
 
-namespace SOE {
+namespace QVT::SOE {
     class OrderCancel: public OutboundMessage {
     public:
         int OrderId;
@@ -83,7 +82,7 @@ namespace SOE {
     };
 }
 
-namespace SOE {
+namespace QVT::SOE {
     class OrderAccepted: public InboundMessage {
         int OrderId;
         int Price;
@@ -99,7 +98,7 @@ namespace SOE {
     };
 }
 
-namespace SOE {
+namespace QVT::SOE {
     class OrderRejected: public InboundMessage {
         int OrderId;
         int Price;
@@ -115,7 +114,7 @@ namespace SOE {
     };
 }
 
-namespace SOE {
+namespace QVT::SOE {
     class OrderExecuted: public InboundMessage {
         int OrderId;
         int Price;
