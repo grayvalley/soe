@@ -4,7 +4,7 @@
 namespace QVT::SOE {
     std::map<std::string, SOE::MESSAGE_TYPE> soe_enum_map = {
             {"A", SOE::MESSAGE_TYPE_ORDER_ADD},
-            {"C", SOE::MESSAGE_TYPE_ORDER_CANCEL},
+            {"X", SOE::MESSAGE_TYPE_ORDER_CANCELED},
             {"E", SOE::MESSAGE_TYPE_ORDER_EXECUTED},
             {"Y", SOE::MESSAGE_TYPE_ORDER_ACCEPTED},
             {"R", SOE::MESSAGE_TYPE_ORDER_REJECTED}

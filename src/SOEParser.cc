@@ -8,6 +8,7 @@ namespace QVT::SOE {
         m_p_orderAccepted = new OrderAccepted();
         m_p_orderRejected = new OrderRejected();
         m_p_orderExecuted = new OrderExecuted();
+        m_p_orderCanceled = new OrderCanceled();
     }
 }
 
@@ -17,6 +18,7 @@ namespace QVT::SOE {
         delete m_p_orderAccepted;
         delete m_p_orderRejected;
         delete m_p_orderExecuted;
+        delete m_p_orderCanceled;
     }
 }
 
@@ -46,6 +48,11 @@ namespace QVT::SOE {
             case MESSAGE_TYPE_ORDER_EXECUTED: {
                 m_p_orderExecuted->get(m_p_message);
                 m_p_listener->onOrderExecuted(m_p_orderExecuted);
+                break;
+            }
+            case MESSAGE_TYPE_ORDER_CANCELED: {
+                m_p_orderCanceled->get(m_p_message);
+                m_p_listener->onOrderCanceled(m_p_orderCanceled);
                 break;
             }
         }
