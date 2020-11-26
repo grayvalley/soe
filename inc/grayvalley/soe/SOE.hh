@@ -59,6 +59,7 @@ namespace QVT::SOE {
         int Quantity;
         ORDER_TYPE OrderType;
         SIDE Side;
+
     public:
         OrderAdd() = default;
         PREVENT_COPY(OrderAdd);
@@ -124,6 +125,22 @@ namespace QVT::SOE {
     public:
         void get(Message* message) override;
         friend std::ostream &operator<<(std::ostream& s, const OrderExecuted& instance);
+    };
+}
+
+namespace QVT::SOE {
+    class OrderCanceled: public InboundMessage {
+        int OrderId;
+        int Price;
+        int Quantity;
+        SIDE Side;
+        std::string Reason;
+    public:
+        OrderCanceled() = default;
+        PREVENT_COPY(OrderCanceled);
+    public:
+        void get(Message* message) override;
+        friend std::ostream &operator<<(std::ostream& s, const OrderCanceled& instance);
     };
 }
 

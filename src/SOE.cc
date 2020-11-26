@@ -130,6 +130,17 @@ namespace QVT::SOE {
 }
 
 namespace QVT::SOE {
+    void OrderCanceled::get(Message* message) {
+        OrderId  = message->get<int>("order-id");
+        Price    = message->get<int>("price");
+        Quantity = message->get<int>("quantity");
+        auto side = message->get<std::string>("side");
+        Side = map_side_char_enum.find(side)->second;
+        Reason = message->get<std::string>("reason");
+    }
+}
+
+namespace QVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderAdd& instance){
         s << " --- [OrderAdd] ---" << std::endl;
         s << "OrderId: " << instance.OrderId << std::endl;
@@ -189,6 +200,23 @@ namespace QVT::SOE {
         s << "OrderId: " << instance.OrderId << std::endl;
         s << "Price: " << instance.Price << std::endl;
         s << "Quantity: " << instance.Quantity << std::endl;
+        return s;
+    }
+}
+
+namespace QVT::SOE {
+    std::ostream &operator<<(std::ostream& s, const OrderCanceled& instance){
+        s << " --- [OrderCanceled] ---" << std::endl;
+        s << "OrderId: " << instance.OrderId << std::endl;
+        s << "Price: " << instance.Price << std::endl;
+        s << "Quantity: " << instance.Quantity << std::endl;
+        if(instance.Side == SIDE::B){
+            s << "Side: B" << std::endl;
+        }
+        else
+        {
+            s << "Side: S" << std::endl;
+        }
         return s;
     }
 }
