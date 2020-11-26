@@ -7,8 +7,8 @@
 #include <iostream>
 #include <utility>
 #include <regex>
-#include <laniakea/eridanus/sha1/sha1.hh>
-#include <laniakea/eridanus/base64/base64.h>
+#include <grayvalley/soe/sha1/sha1.hh>
+#include <grayvalley/soe/base64/base64.h>
 
 #define OPCODE_CONTINUE 0x0
 #define OPCODE_TEXT 0x1

@@ -1,7 +1,7 @@
 #include <system_error>
-#include <laniakea/eridanus/SOEClient.hh>
-#include <laniakea/eridanus/RFC6455.hh>
-#include <laniakea/virgo/epolling.hh>
+#include <grayvalley/soe/SOEClient.hh>
+#include <grayvalley/soe/RFC6455.hh>
+#include <grayvalley/core/epolling.hh>
 
 namespace SOE {
     SOEClient::SOEClient(SOEParser* p_parser) {

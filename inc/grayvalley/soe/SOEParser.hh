@@ -1,7 +1,7 @@
-#ifndef SOEPARSER_HH
-#define SOEPARSER_HH
-#include <laniakea/eridanus/SOE.hh>
-#include <laniakea/eridanus/SOEListener.hh>
+#ifndef _SOEPARSER_HH
+#define _SOEPARSER_HH
+#include <grayvalley/soe/SOE.hh>
+#include <grayvalley/soe/SOEListener.hh>
 namespace SOE {
     class SOEParser
     {
@@ -21,4 +21,4 @@ namespace SOE {
         void parse(char* buffer, size_t len);
     };
 }
-#endif //SOEPARSER_HH
+#endif //_SOEPARSER_HH

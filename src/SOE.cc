@@ -1,4 +1,4 @@
-#include <laniakea/eridanus/SOE.hh>
+#include <grayvalley/soe/SOE.hh>
 #include <iostream>
 
 namespace SOE {

@@ -1,5 +1,6 @@
-#include <laniakea/eridanus/SOEParser.hh>
-#include <iostream>
+#include <grayvalley/soe/SOE.hh>
+#include <grayvalley/soe/SOEListener.hh>
+#include <grayvalley/soe/SOEParser.hh>
 
 namespace SOE {
     SOEParser::SOEParser(SOE::SOEListener* p_listener) {

@@ -1,6 +1,6 @@
 #ifndef _SOEORDERENTRY_HH
 #define _SOEORDERENTRY_HH
-#include <laniakea/eridanus/SOE.hh>
+#include <grayvalley/soe/SOE.hh>
 namespace SOE {
     class SOEOrderEntry {
     public:
