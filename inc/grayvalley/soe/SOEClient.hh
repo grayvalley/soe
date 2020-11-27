@@ -4,9 +4,10 @@
 #include <functional>
 #include <grayvalley/core/epolling.hh>
 #include <grayvalley/core/fragment.hh>
+#include <grayvalley/core/RFC6455.hh>
 #include <grayvalley/soe/SOE.hh>
 #include <grayvalley/soe/SOEParser.hh>
-#include <grayvalley/soe/RFC6455.hh>
+
 namespace QVT::SOE {
     class SOEClient : public Epollable {
     private:

@@ -1,7 +1,7 @@
 #include <system_error>
-#include <grayvalley/soe/SOEClient.hh>
-#include <grayvalley/soe/RFC6455.hh>
 #include <grayvalley/core/epolling.hh>
+#include <grayvalley/core/RFC6455.hh>
+#include <grayvalley/soe/SOEClient.hh>
 
 namespace QVT::SOE {
     SOEClient::SOEClient(SOEParser* p_parser) {

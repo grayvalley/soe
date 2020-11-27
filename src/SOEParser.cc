@@ -1,6 +1,7 @@
 #include <grayvalley/soe/SOE.hh>
 #include <grayvalley/soe/SOEListener.hh>
 #include <grayvalley/soe/SOEParser.hh>
+
 namespace QVT::SOE {
     SOEParser::SOEParser(SOE::SOEListener* p_listener) {
         m_p_listener      = p_listener;
