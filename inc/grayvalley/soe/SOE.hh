@@ -5,7 +5,7 @@
 #include <grayvalley/core/macros.hh>
 #include <grayvalley/core/enums.hh>
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     enum MESSAGE_TYPE: int {
         MESSAGE_TYPE_EMPTY,
         MESSAGE_TYPE_INVALID,
@@ -17,7 +17,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class Message {
     protected:
         nlohmann::json m_body;
@@ -33,7 +33,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class InboundMessage {
     public:
         InboundMessage() = default;
@@ -43,7 +43,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class OutboundMessage {
     public:
         OutboundMessage() = default;
@@ -51,7 +51,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class OrderAdd: public InboundMessage, OutboundMessage {
     public:
         int OrderId;
@@ -70,7 +70,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class OrderCancel: public OutboundMessage {
     public:
         int OrderId;
@@ -83,7 +83,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class OrderAccepted: public InboundMessage {
         int OrderId;
         int Price;
@@ -99,7 +99,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class OrderRejected: public InboundMessage {
         int OrderId;
         std::string Reason;
@@ -112,7 +112,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class OrderExecuted: public InboundMessage {
         int OrderId;
         int Price;
@@ -128,7 +128,7 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class OrderCanceled: public InboundMessage {
         int OrderId;
         int Price;

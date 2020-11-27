@@ -2,7 +2,7 @@
 #include <grayvalley/soe/SOEListener.hh>
 #include <grayvalley/soe/SOEParser.hh>
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     SOEParser::SOEParser(SOE::SOEListener* p_listener) {
         m_p_listener      = p_listener;
         m_p_message       = new Message();
@@ -13,7 +13,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     SOEParser::~SOEParser() {
         delete m_p_message;
         delete m_p_orderAccepted;
@@ -23,10 +23,9 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEParser::parse(char* buffer, size_t len) {
         m_p_message->from(buffer, len);
-        m_p_message->print();
         auto message_type = m_p_message->messageType();
         switch (message_type)
         {

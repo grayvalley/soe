@@ -4,7 +4,7 @@
 #include <grayvalley/soe/SOE.hh>
 #include <grayvalley/soe/SOEListener.hh>
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class SOEParser
     {
     private:

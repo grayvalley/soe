@@ -3,19 +3,19 @@
 #include <grayvalley/core/RFC6455.hh>
 #include <grayvalley/soe/SOEClient.hh>
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     SOEClient::SOEClient(SOEParser* p_parser) {
         m_p_parser = p_parser;
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     SOEClient::~SOEClient() {
         delete m_p_parser;
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEClient::connect(const RFC6455::Session& session) {
         m_session = session;
         fd = fd_create();
@@ -24,13 +24,13 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEClient::send(const FragmentView& fragment) {
         fd_send(fd, fragment.base, fragment.len, MSG_DONTWAIT | MSG_NOSIGNAL);
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEClient::recv(Epoller* p_epoller) {
         int n_received = ::recv(fd, buffer, BUFSIZ - used, MSG_DONTWAIT);
         if (n_received > 0) {
@@ -44,7 +44,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEClient::open() {
         m_session.State = RFC6455::CONNECTING;
         auto handshake = m_session.create_handshake();
@@ -52,13 +52,13 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEClient::read_handshake_response(){
         m_session.validate(std::string{buffer, (size_t)(used)});
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEClient::read_websocket_frame() {
         bool exhausted = false;
         while (!exhausted) {
@@ -117,7 +117,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void SOEClient::read() {
         switch (m_session.State) {
             case RFC6455::CONNECTING: {

@@ -8,7 +8,7 @@
 #include <grayvalley/soe/SOE.hh>
 #include <grayvalley/soe/SOEParser.hh>
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     class SOEClient : public Epollable {
     private:
         RFC6455::Session m_session;
