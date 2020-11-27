@@ -1,7 +1,9 @@
 #ifndef _SOEPARSER_HH
 #define _SOEPARSER_HH
+
 #include <grayvalley/soe/SOE.hh>
 #include <grayvalley/soe/SOEListener.hh>
+
 namespace QVT::SOE {
     class SOEParser
     {

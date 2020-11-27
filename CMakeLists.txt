@@ -10,8 +10,6 @@ set(HEADER_FILES
         inc/grayvalley/soe/SOEParser.hh
         inc/grayvalley/soe/SOEClient.hh
         inc/grayvalley/soe/SOEOrderEntry.hh
-        inc/grayvalley/soe/RFC6455.hh
-        inc/grayvalley/soe/sha1/sha1.hh
         )
 
 set(SOURCE_FILES
