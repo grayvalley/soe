@@ -3,7 +3,7 @@
 #include <list>
 #include <grayvalley/core/macros.hh>
 #include <grayvalley/soe/SOE.hh>
-namespace QVT::SOE {
+namespace GVT::SOE {
     class SOEListener {
     public:
         PREVENT_COPY(SOEListener);

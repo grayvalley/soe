@@ -1,7 +1,7 @@
 #include <grayvalley/soe/SOE.hh>
 #include <iostream>
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::map<std::string, SOE::MESSAGE_TYPE> soe_enum_map = {
             {"A", SOE::MESSAGE_TYPE_ORDER_ADD},
             {"X", SOE::MESSAGE_TYPE_ORDER_CANCELED},
@@ -11,21 +11,21 @@ namespace QVT::SOE {
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::map<std::string, SIDE> map_side_char_enum = {
             {"B", SIDE::B},
             {"S", SIDE::S}
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::map<std::string, ORDER_TYPE> map_str_order_type_enum = {
             {"LMT", ORDER_TYPE::LIMIT},
             {"MKT", ORDER_TYPE::MARKET}
     };
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     SOE::MESSAGE_TYPE Message::messageType() {
         if(m_body.empty()){
             return MESSAGE_TYPE_EMPTY;
@@ -39,26 +39,26 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void Message::from(char* buffer, size_t len) {
         m_body = nlohmann::json::parse(buffer, buffer + len);
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     template <typename T>
     T Message::get(const std::string& key) {
         return m_body[key].get<T>();
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void Message::print() {
         std::cout << m_body.dump() << std::endl;
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void OrderAdd::get(Message* message) {
         OrderId  = message->get<int>("order-id");
         Price    = message->get<int>("price");
@@ -67,7 +67,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     nlohmann::json OrderAdd::to_json() {
         nlohmann::json payload;
         payload["message-type"] = "E";
@@ -89,7 +89,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     nlohmann::json OrderCancel::to_json() {
         nlohmann::json payload;
         payload["message-type"] = "X";
@@ -98,7 +98,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void OrderAccepted::get(Message* message) {
         OrderId  = message->get<int>("order-id");
         Price    = message->get<int>("price");
@@ -110,14 +110,14 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void OrderRejected::get(Message* message) {
         OrderId  = message->get<int>("order-id");
         Reason = message->get<std::string>("reason");
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void OrderExecuted::get(Message* message) {
         OrderId  = message->get<int>("order-id");
         Price    = message->get<int>("price");
@@ -129,7 +129,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     void OrderCanceled::get(Message* message) {
         OrderId  = message->get<int>("order-id");
         Price    = message->get<int>("price");
@@ -140,7 +140,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderAdd& instance){
         s << " --- [OrderAdd] ---" << std::endl;
         s << "OrderId: " << instance.OrderId << std::endl;
@@ -167,7 +167,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderCancel& instance){
         s << " --- [OrderCancel] ---" << std::endl;
         s << "OrderId: " << instance.OrderId << std::endl;
@@ -175,7 +175,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderAccepted& instance){
         s << " --- [OrderAccepted] ---" << std::endl;
         s << "OrderId: " << instance.OrderId << std::endl;
@@ -185,7 +185,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderRejected& instance){
         s << " --- [OrderRejected] ---" << std::endl;
         s << "OrderId: " << instance.OrderId << std::endl;
@@ -194,7 +194,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderExecuted& instance){
         s << " --- [OrderExecuted] ---" << std::endl;
         s << "OrderId: " << instance.OrderId << std::endl;
@@ -204,7 +204,7 @@ namespace QVT::SOE {
     }
 }
 
-namespace QVT::SOE {
+namespace GVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderCanceled& instance){
         s << " --- [OrderCanceled] ---" << std::endl;
         s << "OrderId: " << instance.OrderId << std::endl;

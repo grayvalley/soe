@@ -1,7 +1,7 @@
 #ifndef _SOEORDERENTRY_HH
 #define _SOEORDERENTRY_HH
 #include <grayvalley/soe/SOE.hh>
-namespace QVT::SOE {
+namespace GVT::SOE {
     class SOEOrderEntry {
     public:
         PREVENT_COPY(SOEOrderEntry);
