@@ -92,7 +92,7 @@ namespace GVT::SOE {
         PREVENT_COPY(OrderAcceptedMessage);
     public:
         void get(IMessage* message) override;
-        void put(OrderAcceptedEvent* p_event) override;
+        void put(IOrderAcceptedEvent* p_event) override;
         friend std::ostream &operator<<(std::ostream& s, const OrderAcceptedMessage& instance);
     };
 }
@@ -104,7 +104,7 @@ namespace GVT::SOE {
         PREVENT_COPY(OrderRejectedMessage);
     public:
         void get(IMessage* message) override;
-        void put(OrderRejectedEvent* p_event) override;
+        void put(IOrderRejectedEvent* p_event) override;
         friend std::ostream &operator<<(std::ostream& s, const OrderRejectedMessage& instance);
     };
 }
@@ -116,7 +116,7 @@ namespace GVT::SOE {
         PREVENT_COPY(OrderExecutedMessage);
     public:
         void get(IMessage* message) override;
-        void put(OrderExecutedEvent* p_event) override;
+        void put(IOrderExecutedEvent* p_event) override;
         friend std::ostream &operator<<(std::ostream& s, const OrderExecutedMessage& instance);
     };
 }
@@ -133,7 +133,7 @@ namespace GVT::SOE {
         PREVENT_COPY(OrderCanceledMessage);
     public:
         void get(IMessage* message) override;
-        void put(OrderCanceledEvent* p_event) override;
+        void put(IOrderCanceledEvent* p_event) override;
         friend std::ostream &operator<<(std::ostream& s, const OrderCanceledMessage& instance);
     };
 }

@@ -68,18 +68,23 @@ namespace GVT::SOE {
 
 namespace GVT::SOE {
     int Message::type() {
+
         auto body = nlohmann::json::parse(
                 (char*)Data->Value,
                 (char*)Data->Value + Data->Size);
-        if(body.empty()){
+
+        std::string type;
+
+        if(body.empty()) {
             return MESSAGE_TYPE_EMPTY;
         }
-        try{
-            auto type = body["message-type"].get<std::string>();
-            return soe_inbound_types.find(type)->second;
+        try {
+            type = body["message-type"].get<std::string>();
         } catch (nlohmann::json::exception& e){
             return MESSAGE_TYPE_INVALID;
         }
+
+        return soe_inbound_types.find(type)->second;
     }
 }
 
@@ -99,6 +104,7 @@ namespace GVT::SOE {
     nlohmann::json OrderAddMessage::to_json() {
         nlohmann::json payload;
         payload["message-type"] = "A";
+        payload["instrument"] = Instrument;
         payload["price"] = Price;
         payload["quantity"] = Quantity;
         payload["side"] = map_enum_side_to_str[Side];
@@ -141,7 +147,7 @@ namespace GVT::SOE {
  * Get OrderAcceptedEvent from OrderAcceptedMessage.
  */
 namespace GVT::SOE {
-    void OrderAcceptedMessage::put(OrderAcceptedEvent* p_event){
+    void OrderAcceptedMessage::put(IOrderAcceptedEvent* p_event){
         p_event->OrderId = OrderId;
         p_event->Price = Price;
         p_event->Quantity = Quantity;
@@ -173,7 +179,7 @@ namespace GVT::SOE {
  * Get OrderRejectedEvent from OrderRejectedMessage.
  */
 namespace GVT::SOE {
-    void OrderRejectedMessage::put(OrderRejectedEvent* p_event){
+    void OrderRejectedMessage::put(IOrderRejectedEvent* p_event){
         p_event->OrderId = OrderId;
         p_event->Price = Price;
         p_event->Quantity = Quantity;
@@ -205,7 +211,7 @@ namespace GVT::SOE {
  * Get OrderExecutedEvent from OrderExecutedMessage.
  */
 namespace GVT::SOE {
-    void OrderExecutedMessage::put(OrderExecutedEvent* p_event){
+    void OrderExecutedMessage::put(IOrderExecutedEvent* p_event){
         p_event->OrderId = OrderId;
         p_event->Price = Price;
         p_event->Quantity = Quantity;
@@ -239,7 +245,7 @@ namespace GVT::SOE {
  * Get OrderExecutedEvent from OrderExecutedMessage.
  */
  namespace GVT::SOE {
-     void OrderCanceledMessage::put(OrderCanceledEvent* p_event) {
+     void OrderCanceledMessage::put(IOrderCanceledEvent* p_event) {
          p_event->OrderId = OrderId;
          p_event->Price = Price;
          p_event->Quantity = Quantity;
