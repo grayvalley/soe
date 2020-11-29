@@ -25,7 +25,7 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    void SOEClient::send(const FragmentView& fragment) {
+    void SOEClient::send(const StringView& fragment) {
         fd_send(fd, fragment.base, fragment.len, MSG_DONTWAIT | MSG_NOSIGNAL);
     }
 }
@@ -48,7 +48,7 @@ namespace GVT::SOE {
     void SOEClient::open() {
         m_session.State = RFC6455::CONNECTING;
         auto handshake = m_session.create_handshake();
-        send(FragmentView::from(handshake));
+        send(StringView::from(handshake));
     }
 }
 

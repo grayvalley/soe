@@ -3,7 +3,6 @@
 #include <string>
 #include <functional>
 #include <grayvalley/core/epolling.hh>
-#include <grayvalley/core/fragment.hh>
 #include <grayvalley/core/RFC6455.hh>
 #include <grayvalley/soe/SOE.hh>
 #include <grayvalley/soe/SOEParser.hh>
@@ -27,7 +26,7 @@ namespace GVT::SOE {
     public:
         void connect(const RFC6455::Session& session);
         void open();
-        void send(const FragmentView& fragment);
+        void send(const StringView& fragment);
     };
 }
 
