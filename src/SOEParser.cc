@@ -4,30 +4,34 @@
 
 namespace GVT::SOE {
     SOEParser::SOEParser(SOE::SOEListener* p_listener) {
-        m_p_listener      = p_listener;
-        m_p_message       = new Message();
-        m_p_orderAccepted = new OrderAccepted();
-        m_p_orderRejected = new OrderRejected();
-        m_p_orderExecuted = new OrderExecuted();
-        m_p_orderCanceled = new OrderCanceled();
+
+        m_p_listener = p_listener;
+
+        m_p_message = new Message();
+
+        m_p_orderAcceptedMessage = new OrderAcceptedMessage();
+        m_p_orderRejectedMessage = new OrderRejectedMessage();
+        m_p_orderExecutedMessage = new OrderExecutedMessage();
+        m_p_orderCanceledMessage = new OrderCanceledMessage();
+
     }
 }
 
 namespace GVT::SOE {
     SOEParser::~SOEParser() {
         delete m_p_message;
-        delete m_p_orderAccepted;
-        delete m_p_orderRejected;
-        delete m_p_orderExecuted;
-        delete m_p_orderCanceled;
+        delete m_p_orderAcceptedMessage;
+        delete m_p_orderRejectedMessage;
+        delete m_p_orderExecutedMessage;
+        delete m_p_orderCanceledMessage;
     }
 }
 
 namespace GVT::SOE {
     void SOEParser::parse(char* buffer, size_t len) {
         m_p_message->from(buffer, len);
-        auto message_type = m_p_message->messageType();
-        switch (message_type)
+        auto type = m_p_message->type();
+        switch (type)
         {
             case MESSAGE_TYPE_EMPTY: {
                 return;
@@ -36,23 +40,23 @@ namespace GVT::SOE {
                 return;
             }
             case MESSAGE_TYPE_ORDER_ACCEPTED: {
-                m_p_orderAccepted->get(m_p_message);
-                m_p_listener->onOrderAccepted(m_p_orderAccepted);
+                m_p_orderAcceptedMessage->get(m_p_message);
+                m_p_listener->onOrderAccepted(m_p_orderAcceptedMessage);
                 break;
             }
             case MESSAGE_TYPE_ORDER_REJECTED: {
-                m_p_orderRejected->get(m_p_message);
-                m_p_listener->onOrderRejected(m_p_orderRejected);
+                m_p_orderRejectedMessage->get(m_p_message);
+                m_p_listener->onOrderRejected(m_p_orderRejectedMessage);
                 break;
             }
             case MESSAGE_TYPE_ORDER_EXECUTED: {
-                m_p_orderExecuted->get(m_p_message);
-                m_p_listener->onOrderExecuted(m_p_orderExecuted);
+                m_p_orderExecutedMessage->get(m_p_message);
+                m_p_listener->onOrderExecuted(m_p_orderExecutedMessage);
                 break;
             }
             case MESSAGE_TYPE_ORDER_CANCELED: {
-                m_p_orderCanceled->get(m_p_message);
-                m_p_listener->onOrderCanceled(m_p_orderCanceled);
+                m_p_orderCanceledMessage->get(m_p_message);
+                m_p_listener->onOrderCanceled(m_p_orderCanceledMessage);
                 break;
             }
         }

@@ -1,15 +1,33 @@
+/*
+ * Copyright 2020 Juha-Samuli Hellén
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #ifndef _SOE_HH
 #define _SOE_HH
 #include <nlohmann/json.hpp>
 #include <grayvalley/core/fragment.hh>
 #include <grayvalley/core/macros.hh>
 #include <grayvalley/core/enums.hh>
+#include <grayvalley/core/events.hh>
+#include <grayvalley/core/messages.hh>
 
 namespace GVT::SOE {
     enum MESSAGE_TYPE: int {
         MESSAGE_TYPE_EMPTY,
         MESSAGE_TYPE_INVALID,
         MESSAGE_TYPE_ORDER_ADD,
+        MESSAGE_TYPE_ORDER_CANCEL,
         MESSAGE_TYPE_ORDER_CANCELED,
         MESSAGE_TYPE_ORDER_EXECUTED,
         MESSAGE_TYPE_ORDER_ACCEPTED,
@@ -18,129 +36,105 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    class Message {
-    protected:
-        nlohmann::json m_body;
+    class Message: public IMessage {
     public:
         Message() = default;
         PREVENT_COPY(Message);
     public:
-        void from(char* buffer, size_t len);
-        MESSAGE_TYPE messageType();
-        template<typename T>
-        T get(const std::string& key);
+        void from(char* buffer, size_t len) override;
+        int  type() override;
+    public:
         void print();
     };
 }
 
 namespace GVT::SOE {
-    class InboundMessage {
+    class OutboundJSONMessage: public IOutboundMessage {
     public:
-        InboundMessage() = default;
-        PREVENT_COPY(InboundMessage);
+        OutboundJSONMessage() = default;
+        PREVENT_COPY(OutboundJSONMessage);
     public:
-        virtual void get(Message* message) = 0;
+        virtual nlohmann::json to_json() = 0;
     };
 }
 
 namespace GVT::SOE {
-    class OutboundMessage {
+    class OrderAddMessage:
+            public IOrderAddMessage,
+            public OutboundJSONMessage {
     public:
-        OutboundMessage() = default;
-        PREVENT_COPY(OutboundMessage);
+        OrderAddMessage() = default;
+        PREVENT_COPY(OrderAddMessage);
+    public:
+        nlohmann::json to_json() override;
+        friend std::ostream &operator<<(std::ostream& s, const OrderAddMessage& instance);
     };
 }
 
 namespace GVT::SOE {
-    class OrderAdd: public InboundMessage, OutboundMessage {
+    class OrderCancelMessage:
+            public IOrderCancelMessage,
+            public OutboundJSONMessage {
     public:
-        int OrderId;
-        int Price;
-        int Quantity;
-        ORDER_TYPE OrderType;
-        SIDE Side;
-
+        OrderCancelMessage() = default;
+        PREVENT_COPY(OrderCancelMessage);
     public:
-        OrderAdd() = default;
-        PREVENT_COPY(OrderAdd);
-    public:
-        void get(Message* message) override;
-        nlohmann::json to_json();
-        friend std::ostream &operator<<(std::ostream& s, const OrderAdd& instance);
+        nlohmann::json to_json() override;
+        friend std::ostream &operator<<(std::ostream& s, const OrderCancelMessage& instance);
     };
 }
 
 namespace GVT::SOE {
-    class OrderCancel: public OutboundMessage {
+    class OrderAcceptedMessage: public IInboundMessage, public IOrderAcceptedMessage {
+
     public:
-        int OrderId;
+        OrderAcceptedMessage() = default;
+        PREVENT_COPY(OrderAcceptedMessage);
     public:
-        OrderCancel() = default;
-        PREVENT_COPY(OrderCancel);
-    public:
-        nlohmann::json to_json();
-        friend std::ostream &operator<<(std::ostream& s, const OrderCancel& instance);
+        void get(IMessage* message) override;
+        void put(OrderAcceptedEvent* p_event) override;
+        friend std::ostream &operator<<(std::ostream& s, const OrderAcceptedMessage& instance);
     };
 }
 
 namespace GVT::SOE {
-    class OrderAccepted: public InboundMessage {
-        int OrderId;
-        int Price;
-        int Quantity;
-        ORDER_TYPE OrderType;
-        SIDE Side;
+    class OrderRejectedMessage: public IInboundMessage, public IOrderRejectedMessage {
     public:
-        OrderAccepted() = default;
-        PREVENT_COPY(OrderAccepted);
+        OrderRejectedMessage() = default;
+        PREVENT_COPY(OrderRejectedMessage);
     public:
-        void get(Message* message) override;
-        friend std::ostream &operator<<(std::ostream& s, const OrderAccepted& instance);
+        void get(IMessage* message) override;
+        void put(OrderRejectedEvent* p_event) override;
+        friend std::ostream &operator<<(std::ostream& s, const OrderRejectedMessage& instance);
     };
 }
 
 namespace GVT::SOE {
-    class OrderRejected: public InboundMessage {
-        int OrderId;
-        std::string Reason;
+    class OrderExecutedMessage: public IInboundMessage, public IOrderExecutedMessage {
     public:
-        OrderRejected() = default;
-        PREVENT_COPY(OrderRejected);
+        OrderExecutedMessage() = default;
+        PREVENT_COPY(OrderExecutedMessage);
     public:
-        void get(Message* message) override;
-        friend std::ostream &operator<<(std::ostream& s, const OrderRejected& instance);
+        void get(IMessage* message) override;
+        void put(OrderExecutedEvent* p_event) override;
+        friend std::ostream &operator<<(std::ostream& s, const OrderExecutedMessage& instance);
     };
 }
 
 namespace GVT::SOE {
-    class OrderExecuted: public InboundMessage {
-        int OrderId;
-        int Price;
-        int Quantity;
-        ORDER_TYPE OrderType;
-        SIDE Side;
-    public:
-        OrderExecuted() = default;
-        PREVENT_COPY(OrderExecuted);
-    public:
-        void get(Message* message) override;
-        friend std::ostream &operator<<(std::ostream& s, const OrderExecuted& instance);
-    };
-}
-
-namespace GVT::SOE {
-    class OrderCanceled: public InboundMessage {
+    class OrderCanceledMessage: public IInboundMessage, public IOrderCanceledMessage {
         int OrderId;
         int Price;
         int Quantity;
         SIDE Side;
         std::string Reason;
     public:
-        OrderCanceled() = default;
-        PREVENT_COPY(OrderCanceled);
+        OrderCanceledMessage() = default;
+        PREVENT_COPY(OrderCanceledMessage);
     public:
-        void get(Message* message) override;
-        friend std::ostream &operator<<(std::ostream& s, const OrderCanceled& instance);
+        void get(IMessage* message) override;
+        void put(OrderCanceledEvent* p_event) override;
+        friend std::ostream &operator<<(std::ostream& s, const OrderCanceledMessage& instance);
     };
 }
 

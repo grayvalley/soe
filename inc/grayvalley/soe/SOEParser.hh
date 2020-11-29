@@ -8,12 +8,16 @@ namespace GVT::SOE {
     class SOEParser
     {
     private:
-        Message*       m_p_message       = nullptr;
-        OrderAccepted* m_p_orderAccepted = nullptr;
-        OrderRejected* m_p_orderRejected = nullptr;
-        OrderExecuted* m_p_orderExecuted = nullptr;
-        OrderCanceled* m_p_orderCanceled = nullptr;
-        SOEListener*   m_p_listener      = nullptr;
+
+        SOEListener* m_p_listener = nullptr;
+
+        Message* m_p_message = nullptr;
+
+        OrderAcceptedMessage* m_p_orderAcceptedMessage = nullptr;
+        OrderRejectedMessage* m_p_orderRejectedMessage = nullptr;
+        OrderExecutedMessage* m_p_orderExecutedMessage = nullptr;
+        OrderCanceledMessage* m_p_orderCanceledMessage = nullptr;
+
     public:
         SOEParser() = delete;
         explicit SOEParser(SOEListener* p_listener);
