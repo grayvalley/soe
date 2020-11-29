@@ -16,7 +16,6 @@
 #ifndef _SOE_HH
 #define _SOE_HH
 #include <nlohmann/json.hpp>
-#include <grayvalley/core/fragment.hh>
 #include <grayvalley/core/macros.hh>
 #include <grayvalley/core/enums.hh>
 #include <grayvalley/core/events.hh>
