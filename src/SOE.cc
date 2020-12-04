@@ -165,12 +165,6 @@ namespace GVT::SOE {
                 (char*)message->Data->Value,
                 (char*)message->Data->Value + message->Data->Size);
         OrderId = body["order-id"].get<uint64_t>();
-        Price = body["price"].get<uint64_t>();
-        Quantity = body["quantity"].get<uint64_t>();
-        auto side = body["side"].get<std::string>();
-        Side = map_str_side_to_enum.find(side)->second;
-        auto order_type = body["order-type"].get<std::string>();
-        OrderType = map_str_order_type_to_enum.find(order_type)->second;
         Reason = body["reason"].get<std::string>();
     }
 }

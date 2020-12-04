@@ -78,19 +78,16 @@ after the immediate execution of the new order.
 | :-------------  | :----------: | -----------:   |
 |  `message-type` | `string`     | `R`            |
 |  `order_id`     | `int`        |                |
-|  `order-type`   | `string`     | `LMT` or `MKT` |
-|  `quantity`     | `int`        |                |
-|  `price`        | `int`        |                |
-|  `side`         | `string`     | `B`  or `S`    |
 |  `timestamp`    | `int`        |                |
 |  `reason`       | `string`     | `P`  or `Q`    |
 
 The reasons for a rejection are enumerated below.
 
-| Side            | Explanation     | 
-| :-------------  | ----------:     | 
-|  `P`            | `Invalid price`   |
-|  `Q`            | `Invalid quantity` | 
+| Side            | Explanation          | 
+| :-------------  | --------------------:| 
+|  `N`            | `OrderId not found`  |
+|  `O`            | `Ownership error`  |
+
 
 #### Order Executed
 An Order Executed message indicates that an order sent by the client has been executed in part or fully. The match number is the order_id identifier for the trade.
