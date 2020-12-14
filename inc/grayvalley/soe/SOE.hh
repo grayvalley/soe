@@ -35,45 +35,84 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
+
     class Message: public IMessage {
+
     public:
+
         Message() = default;
+
         PREVENT_COPY(Message);
+
     public:
+
+        /**
+         * Populates the body of the message from a buffer
+         *
+         * @param buffer: pointer to the beginning of a buffer
+         * @param len: length of the message
+         */
         void from(char* buffer, size_t len) override;
-        int  type() override;
+
+        /**
+         * Return type id of the message
+         *
+         * @return: integer id
+         */
+        [[nodiscard]] int type() const override;
+
     public:
-        void print();
+
+        template<typename T>
+        T get(std::string key);
+
+    protected:
+
+        nlohmann::json m_body;
+
     };
 }
 
+
+/**
+ *
+ */
 namespace GVT::SOE {
+
     class OutboundJSONMessage: public IOutboundMessage {
+
     public:
+
         OutboundJSONMessage() = default;
+
         PREVENT_COPY(OutboundJSONMessage);
+
     public:
+
+        /**
+         * Converts message into a json object
+         *
+         * @return: json object
+         */
         virtual nlohmann::json to_json() = 0;
+
     };
 }
 
+
 namespace GVT::SOE {
-    class OrderAddMessage:
-            public IOrderAddMessage,
-            public OutboundJSONMessage {
+    class OrderNewMessage: public IOrderNewMessage, public OutboundJSONMessage {
     public:
-        OrderAddMessage() = default;
-        PREVENT_COPY(OrderAddMessage);
+        OrderNewMessage() = default;
+        PREVENT_COPY(OrderNewMessage);
     public:
         nlohmann::json to_json() override;
-        friend std::ostream &operator<<(std::ostream& s, const OrderAddMessage& instance);
+        friend std::ostream &operator<<(std::ostream& s, const OrderNewMessage& instance);
     };
 }
 
 namespace GVT::SOE {
-    class OrderCancelMessage:
-            public IOrderCancelMessage,
-            public OutboundJSONMessage {
+    class OrderCancelMessage: public IOrderCancelMessage, public OutboundJSONMessage {
     public:
         OrderCancelMessage() = default;
         PREVENT_COPY(OrderCancelMessage);

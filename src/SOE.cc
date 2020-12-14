@@ -17,7 +17,7 @@
 #include <grayvalley/soe/SOE.hh>
 
 namespace GVT::SOE {
-    std::map<std::string, SOE::MESSAGE_TYPE> soe_inbound_types = {
+    std::map<std::string, SOE::MESSAGE_TYPE> soe_enum_map = {
             {"X", SOE::MESSAGE_TYPE_ORDER_CANCELED},
             {"E", SOE::MESSAGE_TYPE_ORDER_EXECUTED},
             {"Y", SOE::MESSAGE_TYPE_ORDER_ACCEPTED},
@@ -59,49 +59,55 @@ namespace GVT::SOE {
     };
 }
 
+/**
+ * Populates the body of the message from a buffer
+ *
+ * @param buffer: pointer to the beginning of a buffer
+ * @param len: length of the message
+ */
 namespace GVT::SOE {
     void Message::from(char* buffer, size_t len) {
-        Data->Value = buffer;
-        Data->Size = len;
+        m_body = nlohmann::json::parse(buffer, buffer + len);
     }
 }
 
+/**
+ * Return type id of the message
+ *
+ * @return: integer id
+ */
 namespace GVT::SOE {
-    int Message::type() {
+    int Message::type() const {
 
-        auto body = nlohmann::json::parse(
-                (char*)Data->Value,
-                (char*)Data->Value + Data->Size);
-
-        std::string type;
-
-        if(body.empty()) {
+        if(m_body.empty()){
             return MESSAGE_TYPE_EMPTY;
         }
+
         try {
-            type = body["message-type"].get<std::string>();
-        } catch (nlohmann::json::exception& e){
+            auto value = m_body["message-type"].get<std::string>();
+            return soe_enum_map.find(value)->second;
+        } catch (nlohmann::json::exception& e) {
             return MESSAGE_TYPE_INVALID;
         }
-
-        return soe_inbound_types.find(type)->second;
     }
 }
 
+/**
+ * Return an item from the message body
+ */
 namespace GVT::SOE {
-    void Message::print() {
-        auto body = nlohmann::json::parse(
-                (char*)Data->Value,
-                (char*)Data->Value + Data->Size);
-        std::cout << body.dump() << std::endl;
+    template <typename T>
+    T Message::get(std::string key) {
+        return m_body[key].get<T>();
     }
 }
+
 
 /**
  * Get nlohmann::json object from OrderAddMessage.
  */
 namespace GVT::SOE {
-    nlohmann::json OrderAddMessage::to_json() {
+    nlohmann::json OrderNewMessage::to_json() {
         nlohmann::json payload;
         payload["message-type"] = "A";
         payload["instrument"] = Instrument;
@@ -129,22 +135,20 @@ namespace GVT::SOE {
  * Get OrderAcceptedMessage from generic IMessage.
  */
 namespace GVT::SOE {
-    void OrderAcceptedMessage::get(IMessage* message) {
-        auto body = nlohmann::json::parse(
-                (char*)message->Data->Value,
-                (char*)message->Data->Value + message->Data->Size);
-        OrderId = body["order-id"].get<uint64_t>();
-        Price = body["price"].get<uint64_t>();
-        Quantity = body["quantity"].get<uint64_t>();
-        auto side = body["side"].get<std::string>();
-        Side = map_str_side_to_enum.find(side)->second;
-        auto order_type = body["order-type"].get<std::string>();
+    void OrderAcceptedMessage::get(IMessage* p_imessage) {
+        auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
+        OrderId   = p_message->get<uint64_t>("order-id");
+        Price     = p_message->get<uint64_t>("price");
+        Quantity  = p_message->get<uint64_t>("quantity");
+        auto side = p_message->get<std::string>("side");
+        Side      = map_str_side_to_enum.find(side)->second;
+        auto order_type =  p_message->get<std::string>("order-type");
         OrderType = map_str_order_type_to_enum.find(order_type)->second;
     }
 }
 
 /**
- * Get OrderAcceptedEvent from OrderAcceptedMessage.
+ * Get SOE OrderAcceptedEvent from OrderAcceptedMessage.
  */
 namespace GVT::SOE {
     void OrderAcceptedMessage::put(IOrderAcceptedEvent* p_event){
@@ -157,15 +161,13 @@ namespace GVT::SOE {
 }
 
 /**
- * Get OrderRejectedMessage from generic IMessage.
+ * Get SOE OrderRejectedMessage from generic IMessage.
  */
 namespace GVT::SOE {
-    void OrderRejectedMessage::get(IMessage* message) {
-        auto body = nlohmann::json::parse(
-                (char*)message->Data->Value,
-                (char*)message->Data->Value + message->Data->Size);
-        OrderId = body["order-id"].get<uint64_t>();
-        Reason = body["reason"].get<std::string>();
+    void OrderRejectedMessage::get(IMessage* p_imessage) {
+        auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
+        OrderId = p_message->get<uint64_t>("order-id");
+        Reason  = p_message->get<std::string>("reason");
     }
 }
 
@@ -187,16 +189,14 @@ namespace GVT::SOE {
  * Get OrderExecutedMessage from generic IMessage.
  */
 namespace GVT::SOE {
-    void OrderExecutedMessage::get(IMessage* message) {
-        auto body = nlohmann::json::parse(
-                (char*)message->Data->Value,
-                (char*)message->Data->Value + message->Data->Size);
-        OrderId = body["order-id"].get<uint64_t>();
-        Price = body["price"].get<uint64_t>();
-        Quantity = body["quantity"].get<uint64_t>();
-        auto side = body["side"].get<std::string>();
-        Side = map_str_side_to_enum.find(side)->second;
-        auto order_type = body["order-type"].get<std::string>();
+    void OrderExecutedMessage::get(IMessage* p_imessage) {
+        auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
+        OrderId   = p_message->get<uint64_t>("order-id");
+        Price     = p_message->get<uint64_t>("price");
+        Quantity  = p_message->get<uint64_t>("quantity");
+        auto side = p_message->get<std::string>("side");
+        Side      = map_str_side_to_enum.find(side)->second;
+        auto order_type = p_message->get<std::string>("order-type");
         OrderType = map_str_order_type_to_enum.find(order_type)->second;
     }
 }
@@ -218,20 +218,14 @@ namespace GVT::SOE {
  * Get OrderCanceledMessage from generic IMessage.
  */
 namespace GVT::SOE {
-    void OrderCanceledMessage::get(IMessage* message) {
-        auto body = nlohmann::json::parse(
-                (char*)message->Data->Value,
-                (char*)message->Data->Value + message->Data->Size);
-        OrderId = body["order-id"].get<uint64_t>();
-        Price = body["price"].get<uint64_t>();
-        Quantity = body["quantity"].get<uint64_t>();
-        auto side = body["side"].get<std::string>();
-        Side = map_str_side_to_enum.find(side)->second;
-        if(body.contains("reason")){
-            Reason = body["reason"].get<std::string>();
-        }else{
-            Reason = {};
-        }
+    void OrderCanceledMessage::get(IMessage* p_imessage) {
+        auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
+        OrderId   = p_message->get<uint64_t>("order-id");
+        Price     = p_message->get<uint64_t>("price");
+        Quantity  = p_message->get<uint64_t>("quantity");
+        auto side = p_message->get<std::string>("side");
+        Side      = map_str_side_to_enum.find(side)->second;
+        Reason    = p_message->get<std::string>("reason");
     }
 }
 
@@ -249,7 +243,7 @@ namespace GVT::SOE {
  }
 
 namespace GVT::SOE {
-    std::ostream &operator<<(std::ostream& s, const OrderAddMessage& order){
+    std::ostream &operator<<(std::ostream& s, const OrderNewMessage& order){
         s <<      " --- [OrderAddMessage] ---"  << std::endl;
         s << "Instrument: " << order.Instrument << std::endl;
         s << "Price: "      << order.Price      << std::endl;
