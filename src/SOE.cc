@@ -102,6 +102,11 @@ namespace GVT::SOE {
     }
 }
 
+namespace GVT::SOE {
+    std::string Message::dump() {
+        return m_body.dump();
+    }
+}
 
 /**
  * Get nlohmann::json object from OrderAddMessage.
@@ -166,8 +171,15 @@ namespace GVT::SOE {
 namespace GVT::SOE {
     void OrderRejectedMessage::get(IMessage* p_imessage) {
         auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
-        OrderId = p_message->get<uint64_t>("order-id");
-        Reason  = p_message->get<std::string>("reason");
+        std::cout << p_message->dump() << std::endl;
+        Instrument = p_message->get<uint64_t>("instrument");
+        Price = p_message->get<uint64_t>("price");
+        Quantity = p_message->get<uint64_t>("quantity");
+        auto side = p_message->get<std::string>("side");
+        Side = map_str_side_to_enum[side];
+        auto order_type = p_message->get<std::string>("order-type");
+        OrderType = map_str_order_type_to_enum[order_type];
+        Reason = p_message->get<std::string>("reason");
     }
 }
 
@@ -176,7 +188,6 @@ namespace GVT::SOE {
  */
 namespace GVT::SOE {
     void OrderRejectedMessage::put(IOrderRejectedEvent* p_event){
-        p_event->OrderId = OrderId;
         p_event->Price = Price;
         p_event->Quantity = Quantity;
         p_event->Side = Side;
@@ -277,7 +288,6 @@ namespace GVT::SOE {
 namespace GVT::SOE {
     std::ostream &operator<<(std::ostream& s, const OrderRejectedMessage& order){
         s << " --- [OrderRejectedMessage] ---"    << std::endl;
-        s << "OrderId: "    << order.OrderId      << std::endl;
         s << "Price: "      << order.Price        << std::endl;
         s << "Quantity: "   << order.Quantity     << std::endl;
         s << "Side: "       << map_enum_side_to_str[order.Side] << std::endl;

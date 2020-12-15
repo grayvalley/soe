@@ -63,8 +63,22 @@ namespace GVT::SOE {
 
     public:
 
+        /**
+         * Get a value for a given key from JSON body.
+         *
+         * @tparam T: desired output type
+         * @param key: key for the item
+         * @return: value for a given key from JSON body.
+         */
         template<typename T>
         T get(std::string key);
+
+        /**
+         * Dumps the JSON message body into a string
+         *
+         * @return: string representation of the JSON body.
+         */
+        std::string dump();
 
     protected:
 
