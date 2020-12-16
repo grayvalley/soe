@@ -101,6 +101,8 @@ namespace GVT::SOE {
 
         PREVENT_COPY(OutboundJSONMessage);
 
+        virtual ~OutboundJSONMessage() = default;
+
     public:
 
         /**

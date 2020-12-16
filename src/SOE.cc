@@ -157,6 +157,7 @@ namespace GVT::SOE {
  */
 namespace GVT::SOE {
     void OrderAcceptedMessage::put(IOrderAcceptedEvent* p_event){
+        p_event->Exchange = 0;
         p_event->Instrument = Instrument;
         p_event->OrderId = OrderId;
         p_event->Price = Price;
@@ -188,6 +189,7 @@ namespace GVT::SOE {
  */
 namespace GVT::SOE {
     void OrderRejectedMessage::put(IOrderRejectedEvent* p_event){
+        p_event->Exchange = 0;
         p_event->Instrument = Instrument;
         p_event->Price = Price;
         p_event->Quantity = Quantity;
@@ -218,6 +220,7 @@ namespace GVT::SOE {
  */
 namespace GVT::SOE {
     void OrderExecutedMessage::put(IOrderExecutedEvent* p_event){
+        p_event->Exchange = 0;
         p_event->Instrument = Instrument;
         p_event->OrderId = OrderId;
         p_event->Price = Price;
@@ -247,6 +250,7 @@ namespace GVT::SOE {
  */
  namespace GVT::SOE {
      void OrderCanceledMessage::put(IOrderCanceledEvent* p_event) {
+         p_event->Exchange = 0;
          p_event->Instrument = Instrument;
          p_event->OrderId = OrderId;
          p_event->Price = Price;
