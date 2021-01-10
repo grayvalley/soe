@@ -26,13 +26,6 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    std::map<std::string, SOE::MESSAGE_TYPE> soe_outbound_types = {
-            {"A", SOE::MESSAGE_TYPE_ORDER_ADD},
-            {"X", SOE::MESSAGE_TYPE_ORDER_CANCEL}
-    };
-}
-
-namespace GVT::SOE {
     std::map<std::string, SIDE> map_str_side_to_enum = {
             {"B", SIDE::B},
             {"S", SIDE::S}
@@ -157,6 +150,7 @@ namespace GVT::SOE {
  */
 namespace GVT::SOE {
     void OrderAcceptedMessage::put(IOrderAcceptedEvent* p_event){
+        p_event->Exchange = "sandbox";
         p_event->Instrument = Instrument;
         p_event->OrderId = OrderId;
         p_event->Price = Price;
@@ -188,6 +182,7 @@ namespace GVT::SOE {
  */
 namespace GVT::SOE {
     void OrderRejectedMessage::put(IOrderRejectedEvent* p_event){
+        p_event->Exchange = "sandbox";
         p_event->Instrument = Instrument;
         p_event->Price = Price;
         p_event->Quantity = Quantity;
@@ -203,13 +198,13 @@ namespace GVT::SOE {
 namespace GVT::SOE {
     void OrderExecutedMessage::get(IMessage* p_imessage) {
         auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
-        OrderId   = p_message->get<uint64_t>("order-id");
-        Price     = p_message->get<uint64_t>("price");
-        Quantity  = p_message->get<uint64_t>("quantity");
+        Instrument = p_message->get<uint64_t>("instrument");
+        OrderId = p_message->get<uint64_t>("order-id");
+        Price = p_message->get<uint64_t>("price");
+        Quantity = p_message->get<uint64_t>("quantity");
         auto side = p_message->get<std::string>("side");
-        Side      = map_str_side_to_enum.find(side)->second;
-        auto order_type = p_message->get<std::string>("order-type");
-        OrderType = map_str_order_type_to_enum.find(order_type)->second;
+        Side = map_str_side_to_enum.find(side)->second;
+
     }
 }
 
@@ -218,12 +213,13 @@ namespace GVT::SOE {
  */
 namespace GVT::SOE {
     void OrderExecutedMessage::put(IOrderExecutedEvent* p_event){
+        p_event->Exchange = "sandbox";
         p_event->Instrument = Instrument;
         p_event->OrderId = OrderId;
         p_event->Price = Price;
         p_event->Quantity = Quantity;
         p_event->Side = Side;
-        p_event->OrderType = OrderType;
+
     }
 }
 
@@ -247,6 +243,7 @@ namespace GVT::SOE {
  */
  namespace GVT::SOE {
      void OrderCanceledMessage::put(IOrderCanceledEvent* p_event) {
+         p_event->Exchange = "sandbox";
          p_event->Instrument = Instrument;
          p_event->OrderId = OrderId;
          p_event->Price = Price;

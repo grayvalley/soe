@@ -18,8 +18,8 @@
 #include <nlohmann/json.hpp>
 #include <grayvalley/core/macros.hh>
 #include <grayvalley/core/enums.hh>
-#include <grayvalley/core/events.hh>
-#include <grayvalley/core/messages.hh>
+#include <grayvalley/core/Events.hh>
+#include <grayvalley/core/Messages.hh>
 
 namespace GVT::SOE {
     enum MESSAGE_TYPE: int {
@@ -101,6 +101,8 @@ namespace GVT::SOE {
 
         PREVENT_COPY(OutboundJSONMessage);
 
+        virtual ~OutboundJSONMessage() = default;
+
     public:
 
         /**
@@ -115,10 +117,11 @@ namespace GVT::SOE {
 
 
 namespace GVT::SOE {
-    class OrderNewMessage: public IOrderNewMessage, public OutboundJSONMessage {
+    class OrderNewMessage final: public IOrderNewMessage, public OutboundJSONMessage {
     public:
         OrderNewMessage() = default;
         PREVENT_COPY(OrderNewMessage);
+        ~OrderNewMessage() override = default;
     public:
         nlohmann::json to_json() override;
         friend std::ostream &operator<<(std::ostream& s, const OrderNewMessage& instance);
@@ -126,10 +129,11 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    class OrderCancelMessage: public IOrderCancelMessage, public OutboundJSONMessage {
+    class OrderCancelMessage final: public IOrderCancelMessage, public OutboundJSONMessage {
     public:
         OrderCancelMessage() = default;
         PREVENT_COPY(OrderCancelMessage);
+        ~OrderCancelMessage() override = default;
     public:
         nlohmann::json to_json() override;
         friend std::ostream &operator<<(std::ostream& s, const OrderCancelMessage& instance);
@@ -137,11 +141,12 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    class OrderAcceptedMessage: public IInboundMessage, public IOrderAcceptedMessage {
+    class OrderAcceptedMessage final: public IInboundMessage, public IOrderAcceptedMessage {
 
     public:
         OrderAcceptedMessage() = default;
         PREVENT_COPY(OrderAcceptedMessage);
+        ~OrderAcceptedMessage() override = default;
     public:
         void get(IMessage* message) override;
         void put(IOrderAcceptedEvent* p_event) override;
@@ -150,10 +155,11 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    class OrderRejectedMessage: public IInboundMessage, public IOrderRejectedMessage {
+    class OrderRejectedMessage final: public IInboundMessage, public IOrderRejectedMessage {
     public:
         OrderRejectedMessage() = default;
         PREVENT_COPY(OrderRejectedMessage);
+        ~OrderRejectedMessage() override = default;
     public:
         void get(IMessage* message) override;
         void put(IOrderRejectedEvent* p_event) override;
@@ -162,10 +168,11 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    class OrderExecutedMessage: public IInboundMessage, public IOrderExecutedMessage {
+    class OrderExecutedMessage final: public IInboundMessage, public IOrderExecutedMessage {
     public:
         OrderExecutedMessage() = default;
         PREVENT_COPY(OrderExecutedMessage);
+        ~OrderExecutedMessage() override = default;
     public:
         void get(IMessage* message) override;
         void put(IOrderExecutedEvent* p_event) override;
@@ -174,7 +181,7 @@ namespace GVT::SOE {
 }
 
 namespace GVT::SOE {
-    class OrderCanceledMessage: public IInboundMessage, public IOrderCanceledMessage {
+    class OrderCanceledMessage final: public IInboundMessage, public IOrderCanceledMessage {
         int OrderId;
         int Price;
         int Quantity;
@@ -183,6 +190,7 @@ namespace GVT::SOE {
     public:
         OrderCanceledMessage() = default;
         PREVENT_COPY(OrderCanceledMessage);
+        ~OrderCanceledMessage() override = default;
     public:
         void get(IMessage* message) override;
         void put(IOrderCanceledEvent* p_event) override;

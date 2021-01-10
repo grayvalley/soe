@@ -45,9 +45,9 @@ namespace GVT::SOE {
 namespace GVT::SOE {
     void SOEParser::parse(char* buffer, size_t len) {
         m_p_message->from(buffer, len);
+        m_p_message->dump();
         auto type = m_p_message->type();
-        switch (type)
-        {
+        switch (type) {
             case MESSAGE_TYPE_EMPTY: {
                 return;
             }
@@ -73,6 +73,9 @@ namespace GVT::SOE {
                 m_p_orderCanceledMessage->get(m_p_message);
                 m_p_listener->onOrderCanceled(m_p_orderCanceledMessage);
                 break;
+            }
+            default: {
+                throw std::runtime_error("Message type invalid.");
             }
         }
     }

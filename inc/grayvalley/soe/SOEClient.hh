@@ -2,7 +2,7 @@
 #define _SOECLIENT_HH
 #include <string>
 #include <functional>
-#include <grayvalley/core/epolling.hh>
+#include <grayvalley/core/Engine.hh>
 #include <grayvalley/core/RFC6455.hh>
 #include <grayvalley/soe/SOE.hh>
 #include <grayvalley/soe/SOEParser.hh>
