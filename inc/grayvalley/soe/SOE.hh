@@ -18,8 +18,8 @@
 #include <nlohmann/json.hpp>
 #include <grayvalley/core/macros.hh>
 #include <grayvalley/core/enums.hh>
-#include <grayvalley/core/events.hh>
-#include <grayvalley/core/messages.hh>
+#include <grayvalley/core/Events.hh>
+#include <grayvalley/core/Messages.hh>
 
 namespace GVT::SOE {
     enum MESSAGE_TYPE: int {
