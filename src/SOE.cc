@@ -135,6 +135,7 @@ namespace GVT::SOE {
 namespace GVT::SOE {
     void OrderAcceptedMessage::get(IMessage* p_imessage) {
         auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
+        Instrument = p_message->get<std::string>("instrument");
         OrderId   = p_message->get<uint64_t>("order-id");
         Price     = p_message->get<uint64_t>("price");
         Quantity  = p_message->get<uint64_t>("quantity");
@@ -166,7 +167,7 @@ namespace GVT::SOE {
 namespace GVT::SOE {
     void OrderRejectedMessage::get(IMessage* p_imessage) {
         auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
-        Instrument = p_message->get<uint64_t>("instrument");
+        Instrument = p_message->get<std::string>("instrument");
         Price      = p_message->get<uint64_t>("price");
         Quantity   = p_message->get<uint64_t>("quantity");
         auto side  = p_message->get<std::string>("side");
@@ -198,7 +199,7 @@ namespace GVT::SOE {
 namespace GVT::SOE {
     void OrderExecutedMessage::get(IMessage* p_imessage) {
         auto* p_message = reinterpret_cast<GVT::SOE::Message*>(p_imessage);
-        Instrument = p_message->get<uint64_t>("instrument");
+        Instrument = p_message->get<std::string>("instrument");
         OrderId = p_message->get<uint64_t>("order-id");
         Price = p_message->get<uint64_t>("price");
         Quantity = p_message->get<uint64_t>("quantity");

@@ -16,7 +16,7 @@
 #ifndef _SOELISTENER_HH
 #define _SOELISTENER_HH
 #include <list>
-#include <grayvalley/core/macros.hh>
+#include <grayvalley/core/Macros.hh>
 #include <grayvalley/soe/SOE.hh>
 namespace GVT::SOE {
     class SOEListener {

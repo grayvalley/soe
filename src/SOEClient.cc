@@ -139,9 +139,6 @@ namespace GVT::SOE {
     void SOEClient::sendOrder(
             std::string symbol, uint64_t price, uint64_t quantity, GVT::SIDE side, GVT::ORDER_TYPE type) {
 
-        if(!is_connected)
-            return;
-
         nlohmann::json payload = {
                 {"message-type", "A"},
                 {"instrument", symbol},
@@ -158,13 +155,11 @@ namespace GVT::SOE {
 
 
 namespace GVT::SOE {
-    void SOEClient::cancelOrder(uint64_t order_id) {
-
-        if(!is_connected)
-            return;
+    void SOEClient::cancelOrder(std::string instrument, uint64_t order_id) {
 
         nlohmann::json payload = {
                 {"message-type", "X"},
+                {"instrument", instrument},
                 {"order-id", order_id}
         };
 
