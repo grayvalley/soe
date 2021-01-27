@@ -34,7 +34,7 @@ namespace GVT::SOE {
         inline void sendOrder( std::string symbol,
                 uint64_t price, uint64_t quantity, SIDE side, ORDER_TYPE order_type) override;
 
-        void cancelOrder(std::string instrument, uint64_t order_id) override;
+        void cancelOrder(const std::string& symbol, uint64_t order_id) override;
     };
 }
 
