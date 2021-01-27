@@ -155,11 +155,11 @@ namespace GVT::SOE {
 
 
 namespace GVT::SOE {
-    void SOEClient::cancelOrder(std::string instrument, uint64_t order_id) {
+    void SOEClient::cancelOrder(const std::string& symbol, uint64_t order_id) {
 
         nlohmann::json payload = {
                 {"message-type", "X"},
-                {"instrument", instrument},
+                {"instrument", symbol},
                 {"order-id", order_id}
         };
 
